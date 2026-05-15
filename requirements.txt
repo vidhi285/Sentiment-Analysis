@@ -1,0 +1,14 @@
+# requirements.txt
+# Install all dependencies with:
+#   pip install -r requirements.txt
+
+pymongo==4.6.3
+pandas==2.2.2
+scikit-learn==1.4.2
+emoji==2.12.1
+torch==2.3.0
+torchvision==0.18.0
+Pillow==10.3.0
+matplotlib==3.9.0
+google-api-python-client==2.132.0
+numpy==1.26.4

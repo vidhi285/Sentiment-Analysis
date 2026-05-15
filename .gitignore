@@ -1,0 +1,14 @@
+# Ignore EVERYTHING
+*
+
+# But allow Python files
+!*.py
+
+# Allow requirements
+!requirements.txt
+
+# Allow README
+!README.md
+
+# Allow gitignore itself
+!.gitignore
