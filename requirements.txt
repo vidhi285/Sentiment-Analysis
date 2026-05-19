@@ -2,13 +2,19 @@
 # Install all dependencies with:
 #   pip install -r requirements.txt
 
-pymongo==4.6.3
-pandas==2.2.2
-scikit-learn==1.4.2
-emoji==2.12.1
-torch==2.3.0
-torchvision==0.18.0
-Pillow==10.3.0
-matplotlib==3.9.0
-google-api-python-client==2.132.0
-numpy==1.26.4
+# ─── Existing dependencies (emoji model, MongoDB, YouTube, etc.) ───
+pymongo
+pandas
+scikit-learn
+emoji
+torch
+torchvision
+Pillow
+matplotlib
+google-api-python-client
+numpy
+
+# ─── New dependencies for SBERT + Deep Learning text model ─────────
+sentence-transformers       # SBERT embeddings (all-MiniLM-L6-v2)
+tensorflow                  # Keras deep learning classifier
+transformers                # Required by sentence-transformers (Hugging Face)

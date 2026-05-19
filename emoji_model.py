@@ -409,6 +409,7 @@ from torchvision import transforms, models
 from pymongo import MongoClient
 from PIL import Image
 from sklearn.model_selection import train_test_split
+import pandas as pd
 
 # ─────────────────────────────────────────────
 #  CONFIGURATION
@@ -443,32 +444,42 @@ print(f"[INFO] Using device: {DEVICE}")
 
 
 # ─────────────────────────────────────────────
-#  STEP 1 — CONNECT TO MONGODB & FETCH DATA
+#  STEP 1 — LOAD DATA FROM CSV
 # ─────────────────────────────────────────────
 def fetch_data_from_mongodb():
     """
-    Connects to MongoDB, reads all 5 emoji collections,
-    and returns combined lists of (image_path, label_string).
+    Reads all 5 emoji CSVs and returns combined lists of (image_path, label_string).
+    (Function name kept as fetch_data_from_mongodb so main execution is unaffected, 
+    but it now reads from local CSVs).
     """
-    print("[STEP 1] Connecting to MongoDB …")
-    client = MongoClient(MONGO_URI)
-    db     = client[DB_NAME]
-
+    print("[STEP 1] Loading from CSVs …")
+    
     all_paths  = []
     all_labels = []
 
+    csv_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "CSVS")
+
     for collection_name in COLLECTIONS:
-        collection = db[collection_name]
-        documents  = list(collection.find({}, {"path": 1, "label": 1, "_id": 0}))
+        # e.g. "apple_emoji" -> "CSVS/apple_emoji.csv"
+        csv_path = os.path.join(csv_dir, f"{collection_name}.csv")
+        
+        if not os.path.exists(csv_path):
+            print(f"   [WARN] {collection_name}.csv not found at {csv_path}")
+            continue
 
-        paths  = [doc["path"]  for doc in documents if "path"  in doc and "label" in doc]
-        labels = [doc["label"] for doc in documents if "path"  in doc and "label" in doc]
+        df = pd.read_csv(csv_path)
+        
+        # Ensure 'path' and 'label' columns exist
+        if 'path' in df.columns and 'label' in df.columns:
+            paths  = df['path'].tolist()
+            labels = df['label'].tolist()
+            
+            all_paths.extend(paths)
+            all_labels.extend(labels)
+            print(f"   ✔ {collection_name}: {len(paths)} records loaded")
+        else:
+            print(f"   [WARN] {collection_name}.csv is missing 'path' or 'label' columns")
 
-        all_paths.extend(paths)
-        all_labels.extend(labels)
-        print(f"   ✔ {collection_name}: {len(paths)} records loaded")
-
-    client.close()
     print(f"[STEP 1] Total records fetched: {len(all_paths)}\n")
     return all_paths, all_labels
 

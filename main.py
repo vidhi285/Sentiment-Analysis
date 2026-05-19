@@ -156,8 +156,8 @@
 # ============================================================
 #  main.py
 #  Hybrid YouTube Comment Sentiment Analyser
-#  Text model  : TF-IDF + Logistic Regression (text_model.py)
-#  Emoji model : MobileNetV2                  (emoji_model.py)
+#  Text model  : SBERT + Deep Learning (Keras) (text_model.py)
+#  Emoji model : MobileNetV2                   (emoji_model.py)
 #  Weights     : 70% text  +  30% emoji
 # ============================================================
 
@@ -222,15 +222,18 @@ def load_emoji_model():
     model.eval()
     print(f"[Loaded] Emoji model  ← {MODEL_SAVE_PATH}")
 
-    # Fetch all emoji records from MongoDB
-    client  = MongoClient(MONGO_URI)
-    db      = client[DB_NAME]
+    # Fetch all emoji records from CSVs
+    import pandas as pd
     records = []
+    csv_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "CSVS")
     for col_name in COLLECTIONS:
-        docs = list(db[col_name].find({}, {"path": 1, "label": 1, "_id": 0}))
-        records.extend(docs)
-    client.close()
-    print(f"[Loaded] {len(records)} emoji records from MongoDB")
+        csv_path = os.path.join(csv_dir, f"{col_name}.csv")
+        if os.path.exists(csv_path):
+            df = pd.read_csv(csv_path)
+            if 'path' in df.columns and 'label' in df.columns:
+                docs = df[['path', 'label']].to_dict(orient='records')
+                records.extend(docs)
+    print(f"[Loaded] {len(records)} emoji records from CSVs")
 
     return model, records
 
@@ -334,8 +337,8 @@ def final_decision(text_scores, emoji_scores):
 def run_analysis():
 
     # Load text model
-    print("\n[Loading] Text model...")
-    vectorizer, text_model = load_text_model()
+    print("\n[Loading] Text model (SBERT + Deep Learning)...")
+    sbert_model, text_model, label_encoder = load_text_model()
 
     # Load emoji model (requires emoji_model.pth — run emoji_model.py first)
     if not os.path.exists(MODEL_SAVE_PATH):
@@ -366,7 +369,7 @@ def run_analysis():
     for i, comment in enumerate(comments, 1):
         print(f"\nComment {i}: {comment}")
 
-        text_scores  = predict_text_sentiment(comment, vectorizer, text_model)
+        text_scores  = predict_text_sentiment(comment, sbert_model, text_model, label_encoder)
         emojis       = extract_emojis_from_text(comment)
         emoji_scores = get_emoji_scores_mobilenet(emojis, emoji_model, records)
         label, conf  = final_decision(text_scores, emoji_scores)

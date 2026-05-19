@@ -1,14 +1,11 @@
-# Ignore EVERYTHING
-*
+# Ignore specific file types and directories
+*.csv
+__pycache__/
+.venv/
+*.pkl
+*.npy
 
-# But allow Python files
-!*.py
-
-# Allow requirements
-!requirements.txt
-
-# Allow README
-!README.md
-
-# Allow gitignore itself
-!.gitignore
+# Ignore other common items
+.env
+node_modules/
+datasets/
