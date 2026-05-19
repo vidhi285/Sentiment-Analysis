@@ -151,7 +151,7 @@ for _noisy in ("nlpaug", "gensim", "transformers", "nltk"):
 #  CONFIGURATION
 # =============================================================================
 
-INPUT_FILE  = r"C:\Users\HP\Documents\Sentiment Analysis Project\dataset\training.1600000.processed.noemoticon.csv"
+INPUT_FILE = r"training.1600000.processed.noemoticon.csv"
 OUTPUT_FILE = "balanced_sentiment_dataset.csv"
 
 TARGET_TOTAL   = 3_000_000          # desired total rows in final dataset
