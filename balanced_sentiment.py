@@ -139,8 +139,8 @@ nltk.download = _silent_nltk_download          # patch BEFORE importing nlpaug
 
 # ── Third-party (import nlpaug AFTER patching) ───────────────────────────────
 import pandas as pd
-from nltk.corpus   import stopwords
-from nltk.stem     import WordNetLemmatizer
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
 from nlpaug.augmenter.word import SynonymAug    # safe to import now
 
 # ── Silence noisy loggers from nlpaug / gensim / transformers ────────────────
@@ -151,7 +151,7 @@ for _noisy in ("nlpaug", "gensim", "transformers", "nltk"):
 #  CONFIGURATION
 # =============================================================================
 
-INPUT_FILE  = r"C:\Users\HP\Documents\Sentiment Analysis Project\dataset\training.1600000.processed.noemoticon.csv"
+INPUT_FILE  = r"C:\Users\Birva Dholakiya\Desktop\Studio Based Project\training.1600000.processed.noemoticon.csv"
 OUTPUT_FILE = "balanced_sentiment_dataset.csv"
 
 TARGET_TOTAL   = 3_000_000          # desired total rows in final dataset
