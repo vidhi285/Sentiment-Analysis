@@ -414,7 +414,7 @@ def main():
         print("  Retraining will overwrite it.\n")
         ans = input("  Continue and retrain? (y/n): ").strip().lower()
         if ans not in ("y", "yes"):
-            print("  Cancelled. Run emoji_predict.py to use existing model.\n")
+            print("  Cancelled. Run emoji_testing.py to use existing model.\n")
             sys.exit(0)
 
     run_training(device)
