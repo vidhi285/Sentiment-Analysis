@@ -251,6 +251,25 @@ plt.title("Confusion Matrix - Linear SVM")
 plt.show()
 
 # ============================================================
+# SAVE MODEL
+# IMPORTANT: SAVE BEFORE CROSS VALIDATION
+# ============================================================
+
+print("\nSaving Model...\n")
+
+joblib.dump(
+    model,
+    "svm_model.pkl"
+)
+
+joblib.dump(
+    vectorizer,
+    "tfidf_vectorizer.pkl"
+)
+
+print("Model Saved Successfully")
+
+# ============================================================
 # CROSS VALIDATION
 # ============================================================
 
@@ -266,18 +285,6 @@ cv_scores = cross_val_score(
 print("Cross Validation Scores :", cv_scores)
 
 print("Average CV Accuracy :", cv_scores.mean())
-
-# ============================================================
-# SAVE MODEL
-# ============================================================
-
-print("\nSaving Model...\n")
-
-joblib.dump(model, "svm_model.pkl")
-
-joblib.dump(vectorizer, "tfidf_vectorizer.pkl")
-
-print("Model Saved Successfully")
 
 # ============================================================
 # SAMPLE PREDICTIONS

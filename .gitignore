@@ -15,3 +15,5 @@
 
 # Allow PyTorch model files
 !*.pth
+!*.pkl
+
