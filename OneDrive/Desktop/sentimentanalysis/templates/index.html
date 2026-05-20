@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Intelligence Platform</title>
+
+    <!-- Unified CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Load Unified JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+<body class="landing-body">
+
+    <!-- Landing Top Navbar -->
+    <div class="topbar landing-topbar">
+        <div class="topbar-left">
+            <h2 class="logo-text">Sentiment<span>AI</span></h2>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-bg-glow"></div>
+        <div class="hero-glass">
+            <h1 class="hero-title">Sentiment Intelligence Platform</h1>
+            <p class="hero-subtitle">
+                AI-powered sentiment analysis helps businesses and creators understand audience emotions from YouTube comments using natural language processing, emoji intelligence, and deep learning analytics.
+            </p>
+            <div class="hero-bullets">
+                <span>✓ Positive detection</span>
+                <span>✓ Negative tracking</span>
+                <span>✓ Emoji-based fusion</span>
+            </div>
+            <a href="/dashboard" class="start-btn glow-effect">
+                Open Dashboard ➔
+            </a>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stat-box glass-card">
+            <h2 class="counter" data-target="10000">0</h2><span>+</span>
+            <p>Comments Analyzed</p>
+        </div>
+        <div class="stat-box glass-card">
+            <h2 class="counter" data-target="95">0</h2><span>%</span>
+            <p>Prediction Accuracy</p>
+        </div>
+        <div class="stat-box glass-card">
+            <h2>Real-Time</h2>
+            <p>AI Analytics</p>
+        </div>
+        <div class="stat-box glass-card">
+            <h2>Fusion</h2>
+            <p>SBERT + Emoji AI</p>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <h2 class="section-title">Core Intelligence Features</h2>
+        
+        <div class="features-grid">
+            <!-- Feature 1 -->
+            <div class="feature-card glass-card hover-glow">
+                <div class="feature-icon">🧠</div>
+                <h3>AI Sentiment Detection</h3>
+                <p>Analyze positive, negative, and neutral reactions using deep learning SBERT architecture.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="feature-card glass-card hover-glow">
+                <div class="feature-icon">😊</div>
+                <h3>Emoji Intelligence</h3>
+                <p>Understand audience emotion natively using our weighted emoji-based sentiment fusion pipeline.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="feature-card glass-card hover-glow">
+                <div class="feature-icon">⚡</div>
+                <h3>Real-Time Analytics</h3>
+                <p>View live graphs, dynamic confidence scores, and aggregate sentiment distribution.</p>
+            </div>
+            <!-- Feature 4 -->
+            <div class="feature-card glass-card hover-glow">
+                <div class="feature-icon">📊</div>
+                <h3>Interactive Dashboard</h3>
+                <p>Professional charts, precise confidence metrics, and glassmorphism UI designed for enterprise.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Footer -->
+    <footer class="landing-footer">
+        <div class="footer-content">
+            <h3>Sentiment Intelligence Platform</h3>
+            <p>Powered by SBERT + Deep Learning + Emoji Fusion Analytics</p>
+            <div class="footer-bottom">
+                &copy; 2026 SentimentAI Analytics. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-left">
+        <div class="menu-btn" onclick="toggleSidebar()">☰</div>
+        <h2>Dashboard</h2>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
+</div>
+
+<div class="sidebar" id="sidebar">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/graph">Graph</a>
+    <a href="/emoji">Analytics</a>
+</div>
+
+<div class="main-content">
+
+    <!-- FORM -->
+    <form method="POST" class="card input-section">
+
+        <div style="position: relative; width: 100%;">
+
+            <input
+                type="text"
+                name="youtube_url"
+                id="youtube_url"
+                class="url-input"
+                placeholder="https://www.youtube.com/watch?v=example"
+                value="{{ request.form.get('youtube_url', '') }}"
+                required
+            >
+
+            <span
+                onclick="clearUrl()"
+                style="
+                    position: absolute;
+                    right: 20px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    cursor: pointer;
+                    font-size: 24px;
+                    color: #666;
+                    font-weight: bold;
+                "
+            >
+                ×
+            </span>
+
+        </div>
+
+        <select
+    name="comment_count"
+    class="dropdown"
+>
+    <option value="5">5 Comments</option>
+    <option value="10">10 Comments</option>
+    <option value="15">15 Comments</option>
+    <option value="20">20 Comments</option>
+    <option value="25">25 Comments</option>
+    <option value="30">30 Comments</option>
+    <option value="40">35 Comments</option>
+    <option value="40">40 Comments</option>
+    <option value="40">45 Comments</option>
+    <option value="50">50 Comments</option>
+</select>
+
+        <button
+            type="submit"
+            class="analyze-btn"
+        >
+            Analyze
+        </button>
+
+    </form>
+
+    <!-- OVERALL SUMMARY CARD -->
+    {% if comments %}
+    <div class="overall-summary">
+        <div class="summary-stat">
+            <h4>Dominant Sentiment</h4>
+            <h1 style="color: {% if dominant_sentiment == 'POSITIVE' %}#10b981{% elif dominant_sentiment == 'NEGATIVE' %}#ef4444{% else %}#6366f1{% endif %};">{{ dominant_sentiment }}</h1>
+        </div>
+        <div class="summary-stat">
+            <h4>Confidence</h4>
+            <h1>{{ overall_confidence }}%</h1>
+        </div>
+        <div class="summary-stat">
+            <h4>Positive</h4>
+            <h1 style="color: #10b981;">{{ overall_positive }}%</h1>
+        </div>
+        <div class="summary-stat">
+            <h4>Neutral</h4>
+            <h1 style="color: #6366f1;">{{ overall_neutral }}%</h1>
+        </div>
+        <div class="summary-stat">
+            <h4>Negative</h4>
+            <h1 style="color: #ef4444;">{{ overall_negative }}%</h1>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- RESULT BOXES -->
+    <div class="stats">
+
+        <!-- Positive -->
+        <div class="box">
+            <h3>Positive ({{ positive }})</h3>
+
+            {% for item in comments %}
+                {% if item.final_sentiment == "POSITIVE" %}
+                    <div class="comment-card">
+                        <div class="comment-header">
+                            <span class="comment-badge badge-positive">POS • {{ item.confidence }}%</span>
+                        </div>
+                        <p style="font-size: 13px; margin-bottom: 10px; line-height: 1.4;">{{ item.comment }}</p>
+                        
+                        <div class="score-row">
+                            <span>Text</span>
+                            <span>{{ item.text_scores.positive }}%</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar progress-positive" style="width: {{ item.text_scores.positive }}%;"></div>
+                        </div>
+
+                        <div class="score-row">
+                            <span>Emoji</span>
+                            <span>{{ item.emoji_scores.positive }}%</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar progress-positive" style="width: {{ item.emoji_scores.positive }}%;"></div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- Neutral -->
+        <div class="box">
+            <h3>Neutral ({{ neutral }})</h3>
+
+            {% for item in comments %}
+                {% if item.final_sentiment == "NEUTRAL" %}
+                    <div class="comment-card">
+                        <div class="comment-header">
+                            <span class="comment-badge badge-neutral">NEU • {{ item.confidence }}%</span>
+                        </div>
+                        <p style="font-size: 13px; margin-bottom: 10px; line-height: 1.4;">{{ item.comment }}</p>
+                        
+                        <div class="score-row">
+                            <span>Text</span>
+                            <span>{{ item.text_scores.neutral }}%</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar progress-neutral" style="width: {{ item.text_scores.neutral }}%;"></div>
+                        </div>
+
+                        <div class="score-row">
+                            <span>Emoji</span>
+                            <span>{{ item.emoji_scores.neutral }}%</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar progress-neutral" style="width: {{ item.emoji_scores.neutral }}%;"></div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- Negative -->
+        <div class="box">
+            <h3>Negative ({{ negative }})</h3>
+
+            {% for item in comments %}
+                {% if item.final_sentiment == "NEGATIVE" %}
+                    <div class="comment-card">
+                        <div class="comment-header">
+                            <span class="comment-badge badge-negative">NEG • {{ item.confidence }}%</span>
+                        </div>
+                        <p style="font-size: 13px; margin-bottom: 10px; line-height: 1.4;">{{ item.comment }}</p>
+                        
+                        <div class="score-row">
+                            <span>Text</span>
+                            <span>{{ item.text_scores.negative }}%</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar progress-negative" style="width: {{ item.text_scores.negative }}%;"></div>
+                        </div>
+
+                        <div class="score-row">
+                            <span>Emoji</span>
+                            <span>{{ item.emoji_scores.negative }}%</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar progress-negative" style="width: {{ item.emoji_scores.negative }}%;"></div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+<script>
+function clearUrl() {
+    document.getElementById("youtube_url").value = "";
+}
+</script>
+
+</body>
+</html>

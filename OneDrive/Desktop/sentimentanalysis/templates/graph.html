@@ -1,0 +1,151 @@
+<!-- graph.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph Analysis</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <h1>Graph Analysis</h1>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/graph">Graph</a>
+        <a href="/emoji">Analytics</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Result Box -->
+        <div class="big-card">
+            <h2>Dominant Sentiment: {{ dominant_sentiment }} ({{ overall_confidence }}% Confidence)</h2>
+            <p>
+                Visualizing Text vs Emoji sentiment. Fusion analysis shows:
+                <strong>{{ overall_positive }}% POS, {{ overall_neutral }}% NEU, {{ overall_negative }}% NEG</strong>
+            </p>
+        </div>
+
+        <!-- Two Graphs -->
+        <div class="graph-grid">
+
+            <!-- Text Sentiment -->
+            <div class="card">
+                <h2>📝 Text Sentiment Graph</h2>
+                <canvas id="textChart"></canvas>
+            </div>
+
+            <!-- Emoji Sentiment -->
+            <div class="card">
+                <h2>😊 Emoji Sentiment Graph</h2>
+                <canvas id="emojiChart"></canvas>
+            </div>
+
+        </div>
+
+        <!-- Overall Graph -->
+        <div class="card">
+            <h2>📊 Overall Sentiment Graph</h2>
+            <canvas id="overallChart"></canvas>
+        </div>
+
+    </div>
+
+<script>
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("show");
+}
+
+/* Live values from Flask */
+const positive = {{ positive }};
+const neutral = {{ neutral }};
+const negative = {{ negative }};
+
+const text_pos = {{ text_pos | default(0) }};
+const text_neu = {{ text_neu | default(0) }};
+const text_neg = {{ text_neg | default(0) }};
+
+const emoji_pos = {{ emoji_pos | default(0) }};
+const emoji_neu = {{ emoji_neu | default(0) }};
+const emoji_neg = {{ emoji_neg | default(0) }};
+
+/* TEXT DOUGHNUT GRAPH */
+new Chart(document.getElementById("textChart"), {
+    type: "doughnut",
+    data: {
+        labels: ["Positive", "Neutral", "Negative"],
+        datasets: [{
+            label: "Text Sentiment %",
+            data: [text_pos, text_neu, text_neg],
+            backgroundColor: [
+                "#00d26a",
+                "#b9a7e8",
+                "#ff4d6d"
+            ],
+            hoverOffset: 4
+        }]
+    },
+    options: {
+        responsive: true
+    }
+});
+
+/* EMOJI BAR GRAPH */
+new Chart(document.getElementById("emojiChart"), {
+    type: "bar",
+    data: {
+        labels: ["😊 Positive", "😐 Neutral", "😡 Negative"],
+        datasets: [{
+            label: "Emoji Analysis %",
+            data: [emoji_pos, emoji_neu, emoji_neg],
+            backgroundColor: [
+                "#00d26a",
+                "#b9a7e8",
+                "#ff4d6d"
+            ]
+        }]
+    },
+    options: {
+        responsive: true
+    }
+});
+
+/* OVERALL PIE CHART */
+new Chart(document.getElementById("overallChart"), {
+    type: "pie",
+    data: {
+        labels: ["Positive", "Neutral", "Negative"],
+        datasets: [{
+            label: "Overall Comments",
+            data: [{{ overall_positive }}, {{ overall_neutral }}, {{ overall_negative }}],
+            backgroundColor: [
+                "#00d26a",
+                "#b9a7e8",
+                "#ff4d6d"
+            ]
+        }]
+    },
+    options: {
+        responsive: true
+    }
+});
+</script>
+
+</body>
+</html>

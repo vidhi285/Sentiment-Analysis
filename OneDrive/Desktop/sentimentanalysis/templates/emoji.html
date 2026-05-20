@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emoji Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-left">
+        <div class="menu-btn" onclick="toggleSidebar()">☰</div>
+        <h2>Emoji Analysis</h2>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
+</div>
+
+<div class="sidebar" id="sidebar">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/graph">Graph</a>
+    <a href="/emoji">Analytics</a>
+</div>
+
+<div class="main-content">
+
+    <div class="card">
+        <h2>Emoji Sentiment Predictor</h2>
+
+        <input type="text" class="url-input" placeholder="Enter Emoji 😊 😡 ❤️ 😢">
+        <button class="analyze-btn">Predict</button>
+    </div>
+
+    <div class="stats">
+        <div class="box">
+            <h3>Prediction Result</h3>
+            <h2>Positive 😊</h2>
+        </div>
+
+        <div class="box">
+            <h3>Confidence Score</h3>
+            <h2>92%</h2>
+        </div>
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
