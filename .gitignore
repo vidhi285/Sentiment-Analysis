@@ -12,3 +12,6 @@
 
 # Allow gitignore itself
 !.gitignore
+
+# Allow PyTorch model files
+!*.pth
